@@ -1,3 +1,144 @@
-body {
-    background-color: aqua;
+:root {
+    --header-text-color: white;
+}
+
+
+.app-header-container {
+    height: 650px;
+    background-image: url(../img/Hero_Image_Container_Mobile.jpg);
+    background-size: cover;
+    background-position: center;
+}
+
+.app-header-navBtn {
+    filter: invert(1);
+    border:  none;
+}
+
+/* ajustes para adaptar el nav al hero en mobile */
+.app-header-navContainer {
+    position: relative;
+}
+
+.app-header-nav {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 100%;
+}
+/* - */
+
+.app-header-nav .nav-item:hover{
+    background: #0000005c;
+    cursor: pointer;
+}
+
+
+.main-hero  {
+    height: 90%;
+}
+.hero-content-card {
+    border: 1px solid var(--header-text-color);
+    color: var(--header-text-color);    
+}
+
+
+
+.category-card {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 120px;
+    border: 1px solid 1px solid rgb(183 183 183 / 42%);
+    overflow: hidden;
+}
+
+.category-card figure {
+    width: 100%;
+    height: 100%;
+}
+
+.category-card figure img { 
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    transition: transform 0.3s ease;
+}
+
+.category-card figure img:hover { 
+    transform: scale(1.1);
+}
+
+.category-card h2 {
+    position: absolute;
+    z-index: 10;
+    top: 35%;
+    left: 4%;
+    text-align: left;
+    color: white;
+    font-weight: 100;
+}
+
+
+.categories-container {
+    gap: 15px;
+}
+
+@media (min-width: 768px) {
+    .app-header-container {
+        background-image: url(../img/Hero_Image_Container_Tablet.jpg);
+        background-size: cover;
+        background-position: top;
+    }
+
+    .hero-content-card {
+        max-width: 70%;
+    }
+
+
+    .categories-container {
+        gap: 25px;
+    }
+
+    .category-card {
+        width: 250px;
+        height: 300px;
+    }
+
+    .category-card h2 {
+        top: 80%;
+    }
+
+  
+
+}
+
+
+@media (min-width: 992px) {
+
+    .app-header-container {
+        background-image: url(../img/Hero_Image_Container_Desktop.png);
+        background-size: cover;
+        background-position: top;
+    }
+
+    .app-header-nav {
+        position: static;
+        width: auto;
+    }
+
+    .app-header-nav .nav-item:hover  {
+        background: none;
+        cursor: pointer;
+    }
+
+    .app-header-nav .nav-item:hover a {
+        text-decoration: underline;
+    }
+
+    .hero-content-card {
+        max-width: 45%;
+    }
+
 }
