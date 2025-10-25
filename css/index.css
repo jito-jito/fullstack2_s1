@@ -43,6 +43,10 @@
 }
 
 
+.app-main {
+    min-height: 600px;
+}
+
 
 .category-card {
     display: block;
