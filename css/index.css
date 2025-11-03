@@ -1,6 +1,25 @@
 :root {
     --header-text-color: white;
+
+    --btn-bg: #7b1589;
+    --btn-hover-bg: #9b1a9b;
+    --btn-color: white;
 }
+
+.btn-theme {
+    background-color: var(--btn-bg) !important;
+    color: var(--btn-color) !important;
+}
+.btn-theme:hover {
+    background-color: var(--btn-hover-bg) !important;
+}
+
+.form-control:focus {
+    border-color: #8c16f4a4 !important;
+    outline: 0;
+    box-shadow: 0 0 0 .25rem rgba(249, 13, 253, 0.25) !important;
+}
+
 
 
 .app-header-container {
