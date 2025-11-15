@@ -30,6 +30,10 @@
     background-position: center;
 }
 
+.app-header-container.bannerDisabled {
+    height: auto;
+}
+
 .app-header-navBtn {
     filter: invert(1);
     border:  none;
