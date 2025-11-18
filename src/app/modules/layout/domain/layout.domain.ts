@@ -20,7 +20,7 @@ export abstract class LayoutRepository {
 
 
 export const appContent: LayoutData = {
-    appName: 'DuoGamesAngular',
+    appName: 'NgDuoGames',
     heroTitle: 'LOS MEJORES JUEGOS PARA DISFRUTAR EN TU TIEMPO LIBRE',
     footerText: '© 2025 DuoGames. Todos los derechos reservados.'  
 }
