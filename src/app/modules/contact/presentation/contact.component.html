@@ -1,54 +1,79 @@
+<!-- form variables -->
+@let formName = form.get('name');
+@let formAlias = form.get('alias');
+@let formEmail = form.get('email');
+@let formBirthdate = form.get('birthdate');
+@let formPassword = form.get('password');
+@let formConfirmPassword = form.get('confirmPassword');
+@let formAddress = form.get('address');
+
 <main class="container my-5">
     <a class="breadcrumb text-black" href="/index.html">Volver al inicio</a>
     <h1 class="text-center fw-light mt-3 mb-3 mb-md-4">Formulario de Inscripción</h1>
 
-    <!-- FORMULARIO -->
-    <form id="formulario-inscripcion" novalidate>
+    <form id="formulario-inscripcion" novalidate [formGroup]="form" (ngSubmit)="sendForm()">
 
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre completo</label>
-            <input type="text" class="form-control" id="nombre" required>
-            <div class="invalid-feedback">Este campo es obligatorio.</div>
+            <input type="text" formControlName="name" class="form-control" id="nombre">
+            @if (formName?.errors?.['invalidName'] && formName?.touched) {
+            <div class="invalid-feedback d-block">Debes ingresar un nombre válido.</div>
+            }
         </div>
 
         <div class="mb-3">
             <label for="usuario" class="form-label">Usuario</label>
-            <input type="text" class="form-control" id="usuario" required>
-            <div class="invalid-feedback">Debes ingresar un nombre de usuario.</div>
+            <input type="text" formControlName="alias" class="form-control" id="usuario">
+            @if (formAlias?.errors?.['invalidAlias'] && formAlias?.touched) {
+            <div class="invalid-feedback d-block">Debes ingresar un nombre de usuario válido.</div>
+            }
         </div>
 
         <div class="mb-3">
             <label for="email" class="form-label">Correo electrónico</label>
-            <input type="email" class="form-control" id="email" required>
-            <div class="invalid-feedback">Correo inválido.</div>
+            <input type="email" formControlName="email" class="form-control" id="email">
+            @if (formEmail?.errors?.['invalidEmail'] && formEmail?.touched) {
+            <div class="invalid-feedback d-block">Correo inválido.</div>
+            }
         </div>
 
         <div class="mb-3">
             <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
-            <input type="date" class="form-control" id="fechaNacimiento" required>
-            <div class="invalid-feedback">Debes tener al menos 13 años.</div>
+            <input type="date" formControlName="birthdate" class="form-control" id="fechaNacimiento">
+            @if (formBirthdate?.errors?.['invalidBirthdate'] && formBirthdate?.touched) {
+            <div class="invalid-feedback d-block">Debes tener al menos 13 años.</div>
+            }
         </div>
 
         <div class="mb-3">
             <label for="password" class="form-label">Contraseña</label>
-            <input type="password" class="form-control" id="password" required>
-            <div class="invalid-feedback">Debe tener mínimo 8 caracteres, 1 número y 1 mayúscula.</div>
+            <input type="password" formControlName="password" class="form-control" id="password">
+            @if (formPassword?.errors?.['invalidPassword'] && formPassword?.touched) {
+            <div class="invalid-feedback d-block">Debe tener mínimo 8 caracteres, 1 número y 1 mayúscula.</div>
+            }
         </div>
 
         <div class="mb-3">
             <label for="confirmarPassword" class="form-label">Confirmar contraseña</label>
-            <input type="password" class="form-control" id="confirmarPassword" required>
-            <div class="invalid-feedback">Las contraseñas no coinciden.</div>
+            <input type="password" formControlName="confirmPassword" class="form-control" id="confirmarPassword">
+            @if (form?.errors?.['passwordsDoNotMatch'] && formConfirmPassword?.touched) {
+            <div class="invalid-feedback d-block">Las contraseñas no coinciden.</div>
+            }
         </div>
 
         <div class="mb-3">
             <label for="direccionDespacho" class="form-label">Dirección de despacho (opcional)</label>
-            <input type="text" class="form-control" id="direccionDespacho" rows="4">
+            <input type="text" formControlName="address" class="form-control" id="direccionDespacho" rows="4">
         </div>
 
         <div class="d-flex justify-content-between">
-            <button type="submit" class="btn btn-theme">Enviar</button>
-            <button type="reset" class="btn btn-secondary">Limpiar</button>
+            <button type="submit" class="btn btn-theme form-btn-submit">
+                Enviar
+                @if (isLoading) {
+                <span class="loader"></span>
+                }
+            </button>
+            <button (click)="resetForm()" class="btn btn-secondary">Limpiar</button>
         </div>
     </form>
 </main>

@@ -31,6 +31,8 @@ export class LayoutComponent {
   ) {}
 
   ngOnInit() {
+    this.showBanner = this.shouldShowBanner(this.router.url);
+
     this.getMenuData.execute().subscribe(menuItems => {
       this.menuItems = menuItems;
     });
