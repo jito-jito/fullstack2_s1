@@ -3,6 +3,7 @@ import { CategoryRepository } from '../domain/categories.domain';
 import { ShootGamesApiService } from './shoot-games-api.service';
 import { SportGamesApiService } from './sport-games-api.service'
 import { AdventureGamesApiService } from './adventure-games-api.service';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

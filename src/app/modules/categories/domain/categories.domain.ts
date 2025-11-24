@@ -8,18 +8,19 @@ export interface GameItem {
 }
 
 export interface CategoryData {
-    name: string;
+    name: CategoryId;
     games: GameItem[];
 }
 
+export type CategoryId = 'disparos' | 'deportes' | 'aventura';
 
 export abstract class CategoryRepository {
-    abstract getCategoryData(categoryId: string): Observable<CategoryData>;
+    abstract getCategoryData(categoryId: CategoryId): Observable<CategoryData | null>;
 }
 
 
 export const shootGamesData: CategoryData = {
-    name: 'Disparos',
+    name: 'disparos',
     games: [
         {
             id: '1',
@@ -37,7 +38,7 @@ export const shootGamesData: CategoryData = {
 }
 
 export const sportGamesData: CategoryData = {
-    name: 'Deportes',
+    name: 'deportes',
     games: [
         {
             id: '1',
@@ -55,7 +56,7 @@ export const sportGamesData: CategoryData = {
 }
 
 export const adventureGamesData: CategoryData = {
-    name: 'Aventura',
+    name: 'aventura',
     games: [
         {
             id: '1',

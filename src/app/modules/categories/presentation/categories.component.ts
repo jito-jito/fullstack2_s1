@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { GetCategoryData } from '../aplication/getCategoryData';
-import { CategoryData, CategoryRepository } from '../domain/categories.domain';
+import { CategoryData, CategoryId, CategoryRepository } from '../domain/categories.domain';
 import { CategoryRepositoryImpl } from '../infraestructure/category-repository-impl.service';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router, RouterLink } from "@angular/router";
 
@@ -17,7 +17,8 @@ import { ActivatedRoute, ActivatedRouteSnapshot, Router, RouterLink } from "@ang
   ]
 })
 export class CategoriesComponent {
-  categoryData!: CategoryData
+  categoryData!: CategoryData | null;
+  error: boolean = false;
 
   constructor(
     private getCategoryData: GetCategoryData,
@@ -25,14 +26,23 @@ export class CategoriesComponent {
   ) { }
 
   ngOnInit(): void {
+    this.error = false;
+
     this.route.params.subscribe(params => {
       this.loadCategoryData(params['category']);
     });
   }
 
 
-  loadCategoryData(category: string) {
+  loadCategoryData(category: CategoryId) {
     this.getCategoryData.execute(category).subscribe(data => {
+      
+      if(!data) {
+        this.error = true;
+        this.categoryData = null;
+        return;
+      }
+
       this.categoryData = data;
     });
   }

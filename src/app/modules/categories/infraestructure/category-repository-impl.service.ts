@@ -1,16 +1,23 @@
 import { Injectable } from "@angular/core";
-import { CategoryData, CategoryRepository } from "../domain/categories.domain";
+import { CategoryData, CategoryId, CategoryRepository } from "../domain/categories.domain";
 import { GameFactoryService } from "./game-factory.service";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 
 @Injectable({
     providedIn: 'root'
 })
 export class CategoryRepositoryImpl implements CategoryRepository {
-    constructor(private gameFactory: GameFactoryService) {}
-    
-    getCategoryData(categoryId: string): Observable<CategoryData> {
-        const service = this.gameFactory.getCategoryService(categoryId);
-        return service.getCategoryData(categoryId);
+    constructor(private gameFactory: GameFactoryService) { }
+
+    getCategoryData(categoryId: CategoryId): Observable<CategoryData | null> {
+        try {
+            const service = this.gameFactory.getCategoryService(categoryId);
+            const categoryData = service.getCategoryData(categoryId);
+            
+            return categoryData;
+
+        } catch (error) {
+            return of(null);
+        }
     }
 }
