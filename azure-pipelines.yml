@@ -1,0 +1,65 @@
+trigger:
+  - master
+
+name: $(Date:yyyyMMdd).$(Rev:r)
+
+variables:
+  - group: SUM3_SECRETOS
+  - name: ACR_NAME
+    value: 'ACRDEVOPS001AGRUPO09SUM3'
+  - name: IMAGE_NAME
+    value: 'games-app-prod'
+  - name: DOCKER_CONN
+    value: 'SC_ACR_GRUPO09_SUM3'
+  - name: ENVIRONMENT_NAME
+    value: 'gamesApp-PROD' 
+
+stages:
+  - stage: Build
+    jobs:
+      - job: BuildAndPush
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: Docker@2
+            inputs:
+              command: 'buildAndPush'
+              containerRegistry: '$(DOCKER_CONN)'
+              repository: '$(IMAGE_NAME)'
+              dockerfile: '**/Dockerfile'
+              tags: |
+                latest
+                $(Build.BuildNumber)
+
+  - stage: Deploy
+    dependsOn: Build
+    jobs:
+      - deployment: DeployToVM
+        environment: 
+          name: '$(ENVIRONMENT_NAME)'
+          resourceType: VirtualMachine
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - script: |
+                    # 1. Login en ACR
+                    echo $(ACR_PASSWORD) | sudo docker login $(ACR_NAME).azurecr.io -u $(ACR_NAME) --password-stdin
+                    
+                    # 2. Descargar la imagen más reciente
+                    sudo docker pull $(ACR_NAME).azurecr.io/$(IMAGE_NAME):latest
+                    
+                    # 3. Limpieza inteligente del puerto 80 para evitar "Port is already allocated"
+                    CONTAINER_ID=$(sudo docker ps -q --filter "publish=80")
+                    if [ ! -z "$CONTAINER_ID" ]; then
+                        echo "Deteniendo contenedor en puerto 80: $CONTAINER_ID"
+                        sudo docker stop $CONTAINER_ID
+                        sudo docker rm $CONTAINER_ID
+                    fi
+
+                    # 4. Eliminar por nombre por si quedó algún rastro
+                    sudo docker rm -f games-web || true
+                    
+                    # 5. Lanzar el nuevo contenedor de la aplicación Angular
+                    sudo docker run -d -p 80:80 --name games-web $(ACR_NAME).azurecr.io/$(IMAGE_NAME):latest
+                  displayName: 'Levantar App Web en VM (Limpieza de puertos)'
